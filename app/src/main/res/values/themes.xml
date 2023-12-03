@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TestChili" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/grey2</item>
+    </style>
+
+    <style name="Theme.TestChili" parent="Base.Theme.TestChili" />
+</resources>
