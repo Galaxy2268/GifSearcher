@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupRecyclerView(giphyReceiver: GiphyReceiver) {
         binding.recView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            //onScrolled method is called whe user ends scrolling recyclerView
+            //onScrolled method is called when user ends scrolling recyclerView
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 //Then we check if we need to load more gifs and load if so
