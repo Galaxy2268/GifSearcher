@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             //onScrolled method is called whe user ends scrolling recyclerView
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                //Then we check if we check if we need to load more gifs and load if so
+                //Then we check if we need to load more gifs and load if so
                 handleRecyclerView(giphyReceiver)
             }
         })
