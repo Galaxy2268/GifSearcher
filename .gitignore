@@ -13,4 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-/src/main/java/com/galaxy/gifsearcher/giflist/data/remote/util/
+app/src/main/java/com/galaxy/gifsearcher/giflist/data/remote/util/GiphyUrl.kt
