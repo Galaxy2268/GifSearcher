@@ -1,6 +1,6 @@
 package com.galaxy.gifsearcher.giflist.domain.model
 
-data class Giph(
+data class Gif(
     val id: String,
-    var url: String
+    val url: String,
 )
