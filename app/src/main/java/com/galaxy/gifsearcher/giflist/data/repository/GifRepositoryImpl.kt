@@ -1,16 +1,21 @@
 package com.galaxy.gifsearcher.giflist.data.repository
 
 import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.galaxy.gifsearcher.giflist.data.remote.Response
+import com.galaxy.gifsearcher.giflist.data.remote.GiphyApi
+import com.galaxy.gifsearcher.giflist.data.remote.GiphyPagingSource
 import com.galaxy.gifsearcher.giflist.domain.model.Gif
 import com.galaxy.gifsearcher.giflist.domain.repository.GifRepository
 import kotlinx.coroutines.flow.Flow
 
 class GifRepositoryImpl(
-    private val pager: Pager<Int, Gif>
+    private val api: GiphyApi
 ): GifRepository {
-    override fun getTrending(): Flow<PagingData<Gif>> {
-        return pager.flow
+    override fun getTrending(query: String): Flow<PagingData<Gif>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = { GiphyPagingSource(api, query) },
+        ).flow
     }
 }

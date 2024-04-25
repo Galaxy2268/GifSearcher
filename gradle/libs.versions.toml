@@ -1,22 +1,21 @@
 [versions]
 agp = "8.3.2"
-arrowFxCoroutines = "1.2.0"
-arrowCore = "1.2.0"
 coilCompose = "2.5.0"
+coilGif = "2.6.0"
 converterGson = "2.9.0"
 hiltAndroid = "2.49"
 hiltAndroidCompiler = "2.48"
 hiltNavigationCompose = "1.2.0"
 kotlin = "1.9.0"
-coreKtx = "1.12.0"
+coreKtx = "1.13.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 kotlinxCoroutinesAndroid = "1.7.3"
 kotlinxCoroutinesCore = "1.7.3"
 lifecycleRuntimeKtx = "2.7.0"
-activityCompose = "1.8.2"
-composeBom = "2023.08.00"
+activityCompose = "1.9.0"
+composeBom = "2024.04.01"
 materialIconsExtended = "1.6.6"
 navigationCompose = "2.7.7"
 pagingRuntimeKtx = "3.2.1"
@@ -31,9 +30,8 @@ androidx-material-icons-extended = { module = "androidx.compose.material:materia
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntimeKtx" }
 androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
-arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrowFxCoroutines" }
-arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrowCore" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coilGif" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }

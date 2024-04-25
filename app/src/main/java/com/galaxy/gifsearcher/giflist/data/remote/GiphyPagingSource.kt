@@ -8,7 +8,8 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class GiphyPagingSource(
-    private val api: GiphyApi
+    private val api: GiphyApi,
+    private val query: String
 ):PagingSource<Int, Gif>() {
     override fun getRefreshKey(state: PagingState<Int, Gif>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
@@ -21,9 +22,14 @@ class GiphyPagingSource(
             val offset = params.key ?: 0
             val limit = params.loadSize.coerceAtMost(50)
 
-            val gifs = api.getTrending(
+            val gifs = if(query.isBlank()) api.getTrending(
                 offset = offset,
                 limit = limit
+            ).data.map { it.toGif() }
+            else api.getWithSearch(
+                offset = offset,
+                limit = limit,
+                query = query
             ).data.map { it.toGif() }
 
             val nextKey = if (gifs.size < limit) null else offset + limit

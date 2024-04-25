@@ -1,12 +1,7 @@
 package com.galaxy.gifsearcher.di
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import com.galaxy.gifsearcher.giflist.data.remote.GiphyApi
-import com.galaxy.gifsearcher.giflist.data.remote.GiphyPagingSource
 import com.galaxy.gifsearcher.giflist.data.repository.GifRepositoryImpl
-import com.galaxy.gifsearcher.giflist.data.remote.Response
-import com.galaxy.gifsearcher.giflist.domain.model.Gif
 import com.galaxy.gifsearcher.giflist.domain.repository.GifRepository
 import com.galaxy.gifsearcher.util.Constants.GIPHY_BASE_URL
 import dagger.Module
@@ -33,19 +28,11 @@ object AppModule {
             .create(GiphyApi::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun provideGiphyPager(api: GiphyApi): Pager<Int, Gif> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {GiphyPagingSource(api)},
-        )
-    }
 
     @Provides
     @Singleton
-    fun provideGifRepository(pager: Pager<Int, Gif>): GifRepository {
-        return GifRepositoryImpl(pager)
+    fun provideGifRepository(api: GiphyApi): GifRepository {
+        return GifRepositoryImpl(api)
     }
 
 

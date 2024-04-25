@@ -1,7 +1,6 @@
 package com.galaxy.gifsearcher.giflist.data.mappers
 
 import com.galaxy.gifsearcher.giflist.data.remote.Data
-import com.galaxy.gifsearcher.giflist.data.remote.Response
 import com.galaxy.gifsearcher.giflist.domain.model.Gif
 
 fun Data.toGif(): Gif{
