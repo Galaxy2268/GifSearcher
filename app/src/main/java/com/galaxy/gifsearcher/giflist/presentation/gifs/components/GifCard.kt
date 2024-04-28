@@ -9,10 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
+import com.galaxy.gifsearcher.R
 import com.galaxy.gifsearcher.giflist.domain.model.Gif
 
 @Composable
@@ -35,7 +37,8 @@ fun GifCard(
             contentDescription = null,
             modifier = Modifier
                 .aspectRatio(1f),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            placeholder = painterResource(id = R.drawable.placeholder_view_vector),
         )
     }
 }

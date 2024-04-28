@@ -9,15 +9,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -32,6 +40,9 @@ fun GifsScreen(
     val gifs = viewModel.gifsPagingFlow.collectAsLazyPagingItems()
     val searchText = viewModel.searchText.collectAsState()
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(key1 = gifs.loadState) {
         if(gifs.loadState.refresh is LoadState.Error){
@@ -51,9 +62,18 @@ fun GifsScreen(
         OutlinedTextField(
             value = searchText.value,
             onValueChange = viewModel::onSearchTextChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
             placeholder = { Text(text = "Search it!")},
-            maxLines = 1
+            maxLines = 1,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    keyboardController?.hide()
+                    focusManager.clearFocus()
+                }
+            )
         )
         Spacer(modifier = Modifier.height(16.dp))
         if(gifs.loadState.refresh is LoadState.Loading){
@@ -61,7 +81,10 @@ fun GifsScreen(
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }else{
-            LazyColumn(modifier = Modifier.fillMaxSize()){
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+            ){
                 items(count = gifs.itemCount){index ->
                     val gif = gifs[index]
                     gif?.let{ GifCard(gif = it, modifier = Modifier.padding(4.dp)) }
@@ -71,3 +94,4 @@ fun GifsScreen(
     }
 
 }
+
