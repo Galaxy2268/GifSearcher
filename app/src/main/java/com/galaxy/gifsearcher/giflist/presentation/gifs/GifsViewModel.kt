@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GifsViewModel @Inject constructor(
-    repository: GifRepository
+    private val repository: GifRepository
 ): ViewModel() {
 
 
@@ -38,6 +38,9 @@ class GifsViewModel @Inject constructor(
         _searchText.value = text
     }
 
+    fun clearSearchText(){
+        _searchText.value = ""
+    }
 
 
 
