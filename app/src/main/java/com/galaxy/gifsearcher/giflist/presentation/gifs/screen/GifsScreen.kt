@@ -1,6 +1,7 @@
-package com.galaxy.gifsearcher.giflist.presentation.gifs.components
+package com.galaxy.gifsearcher.giflist.presentation.gifs.screen
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,14 +21,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.galaxy.gifsearcher.giflist.presentation.components.GifCard
 import com.galaxy.gifsearcher.giflist.presentation.gifs.GifsViewModel
+import com.galaxy.gifsearcher.giflist.presentation.util.Screen
 
 
 @Composable
 fun GifsScreen(
-    viewModel: GifsViewModel = hiltViewModel()
+    viewModel: GifsViewModel = hiltViewModel(),
+    navController: NavController
 ){
     val gifs = viewModel.gifsPagingFlow.collectAsLazyPagingItems()
     val searchText = viewModel.searchText.collectAsState()
@@ -69,7 +74,14 @@ fun GifsScreen(
             ){
                 items(count = gifs.itemCount){index ->
                     val gif = gifs[index]
-                    gif?.let{ GifCard(gif = it, modifier = Modifier.padding(4.dp)) }
+                    gif?.let{
+                        GifCard(
+                            gif = it,
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .clickable { navController.navigate("${Screen.GifScreen.route}?id=${it.id}&url=${it.url}")}
+                        )
+                    }
                 }
             }
         }

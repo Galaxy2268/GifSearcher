@@ -1,4 +1,4 @@
-package com.galaxy.gifsearcher.giflist.presentation.gifs.components
+package com.galaxy.gifsearcher.giflist.presentation.gifs.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -1,4 +1,4 @@
-package com.galaxy.gifsearcher.giflist.presentation.gifs.components
+package com.galaxy.gifsearcher.giflist.presentation.components
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.shape.RoundedCornerShape
