@@ -1,7 +1,7 @@
 package com.galaxy.gifsearcher.giflist.presentation.gifs.screen
 
 import android.widget.Toast
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,8 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -39,6 +42,7 @@ fun GifsScreen(
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
+    val clipboardManager = LocalClipboardManager.current
 
     LaunchedEffect(key1 = gifs.loadState) {
         if(gifs.loadState.refresh is LoadState.Error){
@@ -76,10 +80,27 @@ fun GifsScreen(
                     val gif = gifs[index]
                     gif?.let{
                         GifCard(
-                            gif = it,
+                            gif = gif,
                             modifier = Modifier
                                 .padding(4.dp)
-                                .clickable { navController.navigate("${Screen.GifScreen.route}?id=${it.id}&url=${it.url}")}
+                                .pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onLongPress = {
+                                            clipboardManager.setText(AnnotatedString(gif.url))
+                                            Toast.makeText(
+                                                context,
+                                                "Copied",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        },
+                                        onTap = {
+                                            navController.navigate("${Screen.GifScreen.route}?id=${gif.id}&url=${gif.url}")
+                                        },
+                                        onPress = {
+                                            focusManager.clearFocus()
+                                        }
+                                    )
+                                }
                         )
                     }
                 }
