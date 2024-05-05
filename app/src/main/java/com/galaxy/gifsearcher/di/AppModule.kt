@@ -3,6 +3,8 @@ package com.galaxy.gifsearcher.di
 import com.galaxy.gifsearcher.giflist.data.remote.GiphyApi
 import com.galaxy.gifsearcher.giflist.data.repository.GifRepositoryImpl
 import com.galaxy.gifsearcher.giflist.domain.repository.GifRepository
+import com.galaxy.gifsearcher.giflist.domain.usecases.GetGifs
+import com.galaxy.gifsearcher.giflist.domain.usecases.GifUseCases
 import com.galaxy.gifsearcher.util.Constants.GIPHY_BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -33,6 +35,14 @@ object AppModule {
     @Singleton
     fun provideGifRepository(api: GiphyApi): GifRepository {
         return GifRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUseCases(repository: GifRepository): GifUseCases{
+        return GifUseCases(
+            getGifs =  GetGifs(repository)
+        )
     }
 
 

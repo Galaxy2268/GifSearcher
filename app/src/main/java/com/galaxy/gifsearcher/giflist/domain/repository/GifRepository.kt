@@ -5,5 +5,5 @@ import com.galaxy.gifsearcher.giflist.domain.model.Gif
 import kotlinx.coroutines.flow.Flow
 
 interface GifRepository {
-     fun getTrending(query: String): Flow<PagingData<Gif>>
+     fun getGifs(query: String): Flow<PagingData<Gif>>
 }

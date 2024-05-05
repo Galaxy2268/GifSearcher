@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.galaxy.gifsearcher.giflist.domain.model.Gif
 import com.galaxy.gifsearcher.giflist.domain.repository.GifRepository
+import com.galaxy.gifsearcher.giflist.domain.usecases.GifUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GifsViewModel @Inject constructor(
-    private val repository: GifRepository
+    private val useCases: GifUseCases
 ): ViewModel() {
 
 
@@ -29,7 +30,7 @@ class GifsViewModel @Inject constructor(
     val gifsPagingFlow: Flow<PagingData<Gif>> = searchText
         .debounce(1000)
         .flatMapLatest {
-            repository.getTrending(it)
+            useCases.getGifs(it)
                 .cachedIn(viewModelScope)
     }
 

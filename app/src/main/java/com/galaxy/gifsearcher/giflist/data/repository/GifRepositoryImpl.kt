@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 class GifRepositoryImpl(
     private val api: GiphyApi
 ): GifRepository {
-    override fun getTrending(query: String): Flow<PagingData<Gif>> {
+    override fun getGifs(query: String): Flow<PagingData<Gif>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = { GiphyPagingSource(api, query) },
