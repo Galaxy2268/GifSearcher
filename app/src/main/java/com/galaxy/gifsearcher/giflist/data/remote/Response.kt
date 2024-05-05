@@ -14,8 +14,8 @@ data class Data(
 )
 
 data class ImageData(
-    @SerializedName("original")
-    val ogImage: OgImage
+    @SerializedName("fixed_width")
+    val image: Image
 )
 
-data class OgImage(val url: String)
+data class Image(val url: String)

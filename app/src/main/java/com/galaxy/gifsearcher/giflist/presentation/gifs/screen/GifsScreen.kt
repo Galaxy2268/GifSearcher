@@ -8,7 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -72,9 +73,10 @@ fun GifsScreen(
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }else{
-            LazyColumn(
+            LazyVerticalStaggeredGrid(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                columns = StaggeredGridCells.Fixed(2)
             ){
                 items(count = gifs.itemCount){index ->
                     val gif = gifs[index]

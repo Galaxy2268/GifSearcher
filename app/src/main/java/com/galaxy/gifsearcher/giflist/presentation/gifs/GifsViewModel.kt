@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.galaxy.gifsearcher.giflist.domain.model.Gif
-import com.galaxy.gifsearcher.giflist.domain.repository.GifRepository
 import com.galaxy.gifsearcher.giflist.domain.usecases.GifUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

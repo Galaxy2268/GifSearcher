@@ -6,6 +6,6 @@ import com.galaxy.gifsearcher.giflist.domain.model.Gif
 fun Data.toGif(): Gif{
     return Gif(
         id = this.id,
-        url = this.image.ogImage.url
+        url = this.image.image.url
     )
 }
