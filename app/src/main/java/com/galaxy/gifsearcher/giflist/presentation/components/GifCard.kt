@@ -38,7 +38,6 @@ fun GifCard(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(gif.url)
-                    .crossfade(true)
                     .placeholderMemoryCacheKey(gif.id)
                     .memoryCacheKey(gif.id)
                     .decoderFactory(ImageDecoderDecoder.Factory())
