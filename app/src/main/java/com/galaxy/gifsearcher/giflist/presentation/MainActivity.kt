@@ -3,6 +3,8 @@ package com.galaxy.gifsearcher.giflist.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalSharedTransitionApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,31 +31,41 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = Screen.GifsScreen.route
-                    ){
-                        composable(route = Screen.GifsScreen.route){
-                            GifsScreen(navController = navController)
-                        }
-
-                        composable(
-                            route = Screen.GifScreen.route + "?id={id}&url={url}",
-                            arguments = listOf(
-                                navArgument(name = "id"){
-                                    type = NavType.StringType
-                                    defaultValue = ""
-                                },
-                                navArgument(name = "url"){
-                                    type = NavType.StringType
-                                    defaultValue = ""
-                                }
-                            )
+                    SharedTransitionLayout {
+                        val navController = rememberNavController()
+                        NavHost(
+                            navController = navController,
+                            startDestination = Screen.GifsScreen.route
                         ){
-                            GifScreen()
+                            composable(route = Screen.GifsScreen.route){
+                                GifsScreen(
+                                    navController = navController,
+                                    animatedContentScope = this,
+                                    sharedTransitionScope = this@SharedTransitionLayout
+                                )
+                            }
+
+                            composable(
+                                route = Screen.GifScreen.route + "?id={id}&url={url}",
+                                arguments = listOf(
+                                    navArgument(name = "id"){
+                                        type = NavType.StringType
+                                        defaultValue = ""
+                                    },
+                                    navArgument(name = "url"){
+                                        type = NavType.StringType
+                                        defaultValue = ""
+                                    }
+                                )
+                            ){
+                                GifScreen(
+                                    animatedContentScope = this,
+                                    sharedTransitionScope = this@SharedTransitionLayout
+                                )
+                            }
                         }
                     }
+
                 }
             }
         }

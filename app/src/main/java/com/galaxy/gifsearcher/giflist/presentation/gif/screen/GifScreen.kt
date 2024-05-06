@@ -1,6 +1,10 @@
 package com.galaxy.gifsearcher.giflist.presentation.gif.screen
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,14 +21,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.galaxy.gifsearcher.giflist.presentation.components.GifCard
 import com.galaxy.gifsearcher.giflist.presentation.gif.GifViewModel
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun GifScreen(
-    viewModel: GifViewModel = hiltViewModel()
+    viewModel: GifViewModel = hiltViewModel(),
+    animatedContentScope: AnimatedContentScope,
+    sharedTransitionScope: SharedTransitionScope
 ){
 
     val clipboardManager = LocalClipboardManager.current
     val gif = viewModel.gif.value
     val context = LocalContext.current
+
 
     Box(
         modifier = Modifier
@@ -46,7 +54,10 @@ fun GifScreen(
                         ).show()
                     },
                 )
-            }
+            },
+            animatedContentScope = animatedContentScope,
+            sharedTransitionScope = sharedTransitionScope
+
         )
     }
 }

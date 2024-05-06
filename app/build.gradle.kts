@@ -69,6 +69,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.compose.animation)
 
 
     //Dagger hilt
@@ -98,6 +99,24 @@ dependencies {
     //Paging
     implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.androidx.paging.compose)
+
+    // Local unit tests
+    testImplementation (libs.androidx.core)
+    testImplementation (libs.androidx.core.testing)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockwebserver)
+    testImplementation (libs.mockk)
+    debugImplementation (libs.ui.test.manifest)
+
+    // Instrumentation tests
+    androidTestImplementation (libs.hilt.android.testing)
+    androidTestImplementation (libs.junit)
+    androidTestImplementation (libs.kotlinx.coroutines.test)
+    androidTestImplementation (libs.truth)
+    androidTestImplementation (libs.core.ktx)
+    androidTestImplementation (libs.mockwebserver)
+    androidTestImplementation (libs.mockk.android)
+    androidTestImplementation (libs.androidx.runner)
 
 
 

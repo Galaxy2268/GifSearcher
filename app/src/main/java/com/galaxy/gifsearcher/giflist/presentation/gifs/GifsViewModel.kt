@@ -1,5 +1,6 @@
 package com.galaxy.gifsearcher.giflist.presentation.gifs
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
