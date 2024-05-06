@@ -31,8 +31,9 @@ fun GifCard(
     with(sharedTransitionScope){
         ElevatedCard(
             modifier = modifier,
-            shape = shape,
-            elevation = elevation
+            elevation = elevation,
+            shape = shape
+
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -47,7 +48,8 @@ fun GifCard(
                     .aspectRatio(1f)
                     .sharedElement(
                         rememberSharedContentState(key = gif.id),
-                        animatedVisibilityScope = animatedContentScope
+                        animatedVisibilityScope = animatedContentScope,
+                        clipInOverlayDuringTransition = OverlayClip(shape)
                     ),
                 contentScale = ContentScale.Crop,
             )
