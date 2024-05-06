@@ -1,9 +1,7 @@
 package com.galaxy.gifsearcher.giflist.presentation.gifs.screen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -17,9 +15,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -54,7 +50,6 @@ fun GifsScreen(
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     val clipboardManager = LocalClipboardManager.current
-    Log.d("testt", "${gifs.loadState}")
 
     LaunchedEffect(key1 = gifs.loadState) {
         if(gifs.loadState.refresh is LoadState.Error){

@@ -7,10 +7,12 @@ import com.galaxy.gifsearcher.giflist.domain.model.Gif
 import retrofit2.HttpException
 import java.io.IOException
 
+
 class GiphyPagingSource(
     private val api: GiphyApi,
     private val query: String
 ):PagingSource<Int, Gif>() {
+
     override fun getRefreshKey(state: PagingState<Int, Gif>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
         val page = state.closestPageToPosition(anchorPosition) ?: return null

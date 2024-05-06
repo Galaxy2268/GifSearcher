@@ -1,7 +1,6 @@
 package com.galaxy.gifsearcher.giflist.presentation.components
 
 import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.aspectRatio
@@ -13,12 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
-import com.galaxy.gifsearcher.R
 import com.galaxy.gifsearcher.giflist.domain.model.Gif
 
 @OptIn(ExperimentalSharedTransitionApi::class)
