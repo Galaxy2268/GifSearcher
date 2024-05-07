@@ -3,6 +3,7 @@ package com.galaxy.gifsearcher.giflist.presentation.components
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.keyframes
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
@@ -14,7 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.decode.ImageDecoderDecoder
+import coil.decode.GifDecoder
 import coil.request.ImageRequest
 import com.galaxy.gifsearcher.giflist.domain.model.Gif
 
@@ -40,15 +41,20 @@ fun GifCard(
                     .data(gif.url)
                     .placeholderMemoryCacheKey(gif.id)
                     .memoryCacheKey(gif.id)
-                    .decoderFactory(ImageDecoderDecoder.Factory())
+                    .decoderFactory(GifDecoder.Factory())
                     .build(),
                 contentDescription = null,
                 modifier = Modifier
-                    .aspectRatio(1f)
+                    .aspectRatio(0.8f)
                     .sharedElement(
                         rememberSharedContentState(key = gif.id),
                         animatedVisibilityScope = animatedContentScope,
-                        clipInOverlayDuringTransition = OverlayClip(shape)
+                        clipInOverlayDuringTransition = OverlayClip(shape),
+                        boundsTransform = { _, _ ->
+                            keyframes {
+                                durationMillis = 175
+                            }
+                        }
                     ),
                 contentScale = ContentScale.Crop,
             )
