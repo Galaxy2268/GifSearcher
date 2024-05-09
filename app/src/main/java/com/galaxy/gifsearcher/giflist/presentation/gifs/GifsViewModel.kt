@@ -55,6 +55,7 @@ class GifsViewModel @Inject constructor(
         if(_searchText.value.isBlank()) return
 
         _searchText.value = ""
+        searchJob?.cancel()
         viewModelScope.launch {
             useCases.getGifs("").cachedIn(viewModelScope).collect{
                 _gifsPagingFlow.value = it
