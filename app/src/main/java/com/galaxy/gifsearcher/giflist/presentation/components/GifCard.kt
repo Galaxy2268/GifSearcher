@@ -43,7 +43,7 @@ fun GifCard(
                     .memoryCacheKey(gif.id)
                     .decoderFactory(GifDecoder.Factory())
                     .build(),
-                contentDescription = null,
+                contentDescription = "Gif",
                 modifier = Modifier
                     .aspectRatio(0.8f)
                     .sharedElement(

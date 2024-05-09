@@ -52,6 +52,8 @@ class GifsViewModel @Inject constructor(
     }
 
     fun clearSearchText(){
+        if(_searchText.value.isBlank()) return
+
         _searchText.value = ""
         viewModelScope.launch {
             useCases.getGifs("").cachedIn(viewModelScope).collect{
