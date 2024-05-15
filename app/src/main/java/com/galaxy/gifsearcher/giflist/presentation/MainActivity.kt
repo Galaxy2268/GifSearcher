@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.galaxy.gifsearcher.giflist.presentation.gif.screen.GifScreen
 import com.galaxy.gifsearcher.giflist.presentation.gifs.screen.GifsScreen
 import com.galaxy.gifsearcher.giflist.presentation.util.Screen
@@ -35,9 +36,9 @@ class MainActivity : ComponentActivity() {
                         val navController = rememberNavController()
                         NavHost(
                             navController = navController,
-                            startDestination = Screen.GifsScreen.route
+                            startDestination = Screen.GifsScreen
                         ){
-                            composable(route = Screen.GifsScreen.route){
+                            composable<Screen.GifsScreen>{
                                 GifsScreen(
                                     navController = navController,
                                     animatedContentScope = this,
@@ -45,19 +46,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
 
-                            composable(
-                                route = Screen.GifScreen.route + "?id={id}&url={url}",
-                                arguments = listOf(
-                                    navArgument(name = "id"){
-                                        type = NavType.StringType
-                                        defaultValue = ""
-                                    },
-                                    navArgument(name = "url"){
-                                        type = NavType.StringType
-                                        defaultValue = ""
-                                    }
-                                )
-                            ){
+                            composable<Screen.GifScreen>{
                                 GifScreen(
                                     animatedContentScope = this,
                                     sharedTransitionScope = this@SharedTransitionLayout

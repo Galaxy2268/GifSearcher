@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kotlin.serialization)
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
 }
@@ -80,9 +81,10 @@ dependencies {
 
     // Compose dependencies
     implementation (libs.androidx.lifecycle.viewmodel.compose)
-    implementation (libs.androidx.navigation.compose)
     implementation (libs.androidx.material.icons.extended)
     implementation (libs.androidx.hilt.navigation.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 
     // Coroutines
     implementation (libs.kotlinx.coroutines.core)

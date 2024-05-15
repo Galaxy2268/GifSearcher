@@ -88,7 +88,7 @@ fun GifsScreen(
                                 .padding(4.dp),
                             animatedContentScope = animatedContentScope,
                             sharedTransitionScope = sharedTransitionScope,
-                            onTap = {navController.navigate("${Screen.GifScreen.route}?id=${gif.id}&url=${gif.url}")},
+                            onTap = {navController.navigate(Screen.GifScreen(id = gif.id, url = gif.url))},
                             onPress = {focusManager.clearFocus()},
                             contextMenu = true,
                         )

@@ -1,6 +1,13 @@
 package com.galaxy.gifsearcher.giflist.presentation.util
 
-sealed class Screen(val route: String){
-    data object GifsScreen: Screen("gifs_screen")
-    data object GifScreen: Screen("gif_screen")
+import kotlinx.serialization.Serializable
+
+sealed class Screen{
+    @Serializable
+    data object GifsScreen: Screen()
+    @Serializable
+    data class GifScreen(
+        val id: String,
+        val url: String
+    ): Screen()
 }
