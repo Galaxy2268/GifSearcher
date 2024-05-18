@@ -8,6 +8,8 @@ sealed class Screen{
     @Serializable
     data class GifScreen(
         val id: String,
-        val url: String
+        val url: String,
+        val width: Float,
+        val height: Float
     ): Screen()
 }

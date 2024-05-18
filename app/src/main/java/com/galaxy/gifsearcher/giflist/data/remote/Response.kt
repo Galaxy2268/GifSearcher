@@ -18,4 +18,8 @@ data class ImageData(
     val image: Image
 )
 
-data class Image(val url: String)
+data class Image(
+    val url: String,
+    val height: Float,
+    val width: Float
+)

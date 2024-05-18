@@ -7,14 +7,18 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -39,7 +43,7 @@ fun GifsScreen(
     navController: NavController,
     animatedContentScope: AnimatedContentScope,
     sharedTransitionScope: SharedTransitionScope
-){
+) {
     val gifs = viewModel.gifsPagingFlow.collectAsLazyPagingItems()
     val searchText = viewModel.searchText.collectAsState()
     val context = LocalContext.current
@@ -47,7 +51,7 @@ fun GifsScreen(
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(key1 = gifs.loadState) {
-        if(gifs.loadState.refresh is LoadState.Error){
+        if (gifs.loadState.refresh is LoadState.Error) {
             Toast.makeText(
                 context,
                 "Error: " + (gifs.loadState.refresh as LoadState.Error).error.message,
@@ -60,7 +64,7 @@ fun GifsScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
-    ){
+    ) {
         CustomSearchField(
             searchText = searchText.value,
             onValueChange = viewModel::onSearchTextChange,
@@ -68,28 +72,39 @@ fun GifsScreen(
             focusRequester = focusRequester,
             focusManager = focusManager
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        if(gifs.loadState.refresh is LoadState.Loading){
-            Box(modifier = Modifier.fillMaxSize()){
+        Spacer(modifier = Modifier.height(8.dp))
+        if (gifs.loadState.refresh is LoadState.Loading) {
+            Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
-        }else{
+        } else {
             LazyVerticalStaggeredGrid(
                 modifier = Modifier
                     .fillMaxSize(),
                 columns = StaggeredGridCells.Fixed(2)
-            ){
-                items(count = gifs.itemCount){index ->
+            ) {
+                items(
+                    count = gifs.itemCount,
+                ) { index ->
                     val gif = gifs[index]
-                    gif?.let{
+                    gif?.let {
                         GifCard(
                             gif = gif,
                             modifier = Modifier
-                                .padding(4.dp),
+                                .padding(2.dp),
                             animatedContentScope = animatedContentScope,
                             sharedTransitionScope = sharedTransitionScope,
-                            onTap = {navController.navigate(Screen.GifScreen(id = gif.id, url = gif.url))},
-                            onPress = {focusManager.clearFocus()},
+                            onTap = {
+                                navController.navigate(
+                                    Screen.GifScreen(
+                                        id = gif.id,
+                                        url = gif.url,
+                                        width = gif.width,
+                                        height = gif.height
+                                    )
+                                )
+                            },
+                            onPress = { focusManager.clearFocus() },
                             contextMenu = true,
                         )
                     }
