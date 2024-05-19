@@ -27,7 +27,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
 import com.galaxy.gifsearcher.giflist.presentation.components.GifCard
 import com.galaxy.gifsearcher.giflist.presentation.gifs.GifsViewModel
 import com.galaxy.gifsearcher.giflist.presentation.util.Screen
@@ -82,7 +81,6 @@ fun GifsScreen(
             ) {
                 items(
                     count = gifs.itemCount,
-                    key = gifs.itemKey{it.id}
                 ) { index ->
                     val gif = gifs[index]
                     gif?.let {
