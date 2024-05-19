@@ -35,7 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.galaxy.gifsearcher.giflist.domain.model.Gif
 
@@ -56,6 +56,7 @@ fun GifCard(
     val context = LocalContext.current
     val clipboardManager = LocalClipboardManager.current
     val interactionSource = remember { MutableInteractionSource() }
+
 
     with(sharedTransitionScope){
         ElevatedCard(
@@ -89,7 +90,7 @@ fun GifCard(
                     .data(gif.url)
                     .placeholderMemoryCacheKey(gif.id)
                     .memoryCacheKey(gif.id)
-                    .decoderFactory(GifDecoder.Factory())
+                    .decoderFactory(ImageDecoderDecoder.Factory())
                     .build(),
                 contentDescription = "Gif",
                 modifier = Modifier
