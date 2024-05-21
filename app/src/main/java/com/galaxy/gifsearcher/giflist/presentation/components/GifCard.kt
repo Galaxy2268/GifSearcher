@@ -35,7 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.decode.ImageDecoderDecoder
+import coil.decode.GifDecoder
 import coil.request.ImageRequest
 import com.galaxy.gifsearcher.giflist.domain.model.Gif
 
@@ -90,7 +90,7 @@ fun GifCard(
                     .data(gif.url)
                     .placeholderMemoryCacheKey(gif.id)
                     .memoryCacheKey(gif.id)
-                    .decoderFactory(ImageDecoderDecoder.Factory())
+                    .decoderFactory(GifDecoder.Factory())
                     .build(),
                 contentDescription = "Gif",
                 modifier = Modifier
