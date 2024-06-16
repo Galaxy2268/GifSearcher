@@ -36,7 +36,7 @@ fun GifScreen(
         delay(550)
         backHandlerEnabled = false
     }
-    BackHandler(backHandlerEnabled) {}
+    BackHandler(backHandlerEnabled){}
 
     Box(
         modifier = Modifier
