@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                                 GifsScreen(
                                     navController = navController,
                                     animatedContentScope = this,
-                                    sharedTransitionScope = this@SharedTransitionLayout
+                                    sharedTransitionScope = this@SharedTransitionLayout,
                                 )
                             }
 

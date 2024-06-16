@@ -38,7 +38,7 @@ fun GifsScreen(
     viewModel: GifsViewModel = hiltViewModel(),
     navController: NavController,
     animatedContentScope: AnimatedContentScope,
-    sharedTransitionScope: SharedTransitionScope
+    sharedTransitionScope: SharedTransitionScope,
 ) {
     val gifs = viewModel.gifsPagingFlow.collectAsLazyPagingItems()
     val searchText = viewModel.searchText.collectAsState()

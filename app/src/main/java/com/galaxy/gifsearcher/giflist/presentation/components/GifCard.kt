@@ -6,7 +6,6 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.keyframes
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.DropdownMenu
@@ -28,8 +28,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
@@ -61,7 +61,16 @@ fun GifCard(
     with(sharedTransitionScope){
         ElevatedCard(
             modifier = modifier
-                .indication(interactionSource, LocalIndication.current)
+                .sharedBounds(
+                    sharedTransitionScope.rememberSharedContentState(key = gif.id),
+                    animatedVisibilityScope = animatedContentScope,
+                    clipInOverlayDuringTransition = OverlayClip(shape),
+                    boundsTransform = { _, _ ->
+                        keyframes {
+                            durationMillis = 175
+                        }
+                    }
+                )
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onLongPress = {
@@ -82,7 +91,6 @@ fun GifCard(
                     )
                 },
             elevation = elevation,
-            shape = shape
 
         ) {
             AsyncImage(
@@ -95,17 +103,11 @@ fun GifCard(
                 contentDescription = "Gif",
                 modifier = Modifier
                     .aspectRatio(gif.width / gif.height)
-                    .sharedElement(
-                        sharedTransitionScope.rememberSharedContentState(key = gif.id),
-                        animatedVisibilityScope = animatedContentScope,
-                        clipInOverlayDuringTransition = OverlayClip(shape),
-                        boundsTransform = { _, _ ->
-                            keyframes {
-                                durationMillis = 175
-                            }
-                        }
+                    .clip(shape)
+                    .indication(
+                        interactionSource,
+                        rememberRipple(bounded = true)
                     ),
-                contentScale = ContentScale.Crop,
             )
             DropdownMenu(
                 expanded = isContextMenuVisible.value,
