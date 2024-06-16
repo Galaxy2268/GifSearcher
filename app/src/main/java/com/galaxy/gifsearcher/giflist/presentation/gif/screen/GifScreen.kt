@@ -33,7 +33,7 @@ fun GifScreen(
     var backHandlerEnabled by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        delay(550)
+        delay(560)
         backHandlerEnabled = false
     }
     BackHandler(backHandlerEnabled){}

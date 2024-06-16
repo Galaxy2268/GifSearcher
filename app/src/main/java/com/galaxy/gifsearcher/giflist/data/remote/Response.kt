@@ -7,7 +7,6 @@ data class Response(
 )
 
 data class Data(
-    val id: String,
     @SerializedName("images")
     val imageData: ImageData
 )

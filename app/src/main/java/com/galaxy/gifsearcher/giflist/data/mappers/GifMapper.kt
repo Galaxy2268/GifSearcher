@@ -5,7 +5,6 @@ import com.galaxy.gifsearcher.giflist.domain.model.Gif
 
 fun Data.toGif(): Gif{
     return Gif(
-        id = this.id,
         url = this.imageData.image.url,
         width = this.imageData.image.width,
         height = this.imageData.image.height
