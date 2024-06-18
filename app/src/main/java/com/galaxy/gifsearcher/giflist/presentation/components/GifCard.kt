@@ -82,11 +82,13 @@ fun GifCard(
                             onTap?.invoke()
                         },
                         onPress = {
-                            val press = PressInteraction.Press(it)
-                            interactionSource.emit(press)
-                            tryAwaitRelease()
-                            interactionSource.emit(PressInteraction.Release(press))
-                            onPress?.invoke()
+                            if(onTap != null || onPress != null) {
+                                val press = PressInteraction.Press(it)
+                                interactionSource.emit(press)
+                                tryAwaitRelease()
+                                interactionSource.emit(PressInteraction.Release(press))
+                                onPress?.invoke()
+                            }
                         }
                     )
                 },

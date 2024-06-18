@@ -33,7 +33,7 @@ fun GifScreen(
     var backHandlerEnabled by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        delay(560)
+        delay(600)
         backHandlerEnabled = false
     }
     BackHandler(backHandlerEnabled){}
@@ -49,7 +49,8 @@ fun GifScreen(
                 .padding(8.dp),
             animatedContentScope = animatedContentScope,
             sharedTransitionScope = sharedTransitionScope,
-            contextMenu = true
+            contextMenu = true,
+            onPress = {}
 
         )
     }

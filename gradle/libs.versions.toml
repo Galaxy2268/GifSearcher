@@ -1,5 +1,5 @@
 [versions]
-agp = "8.4.2"
+agp = "8.5.0"
 coilCompose = "2.5.0"
 coilGif = "2.6.0"
 converterGson = "2.9.0"

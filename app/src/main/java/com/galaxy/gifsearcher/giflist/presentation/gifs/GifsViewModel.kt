@@ -1,5 +1,7 @@
 package com.galaxy.gifsearcher.giflist.presentation.gifs
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -26,6 +28,9 @@ class GifsViewModel @Inject constructor(
 
     private val _gifsPagingFlow = MutableStateFlow<PagingData<Gif>>(PagingData.empty())
     val gifsPagingFlow: Flow<PagingData<Gif>> = _gifsPagingFlow
+
+    private val _isRefreshing = mutableStateOf(false)
+    val isRefreshing: State<Boolean> = _isRefreshing
 
     private var searchJob: Job? = null
 
@@ -61,6 +66,16 @@ class GifsViewModel @Inject constructor(
                 _gifsPagingFlow.value = it
             }
         }
+    }
+
+    fun refresh(){
+        viewModelScope.launch {
+            _isRefreshing.value = true
+            onSearchTextChange(searchText.value)
+            delay(1000)
+            _isRefreshing.value = false
+        }
+
     }
 
 
