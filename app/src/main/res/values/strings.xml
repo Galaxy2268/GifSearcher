@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GifSearcher</string>
+    <string name="title_activity_detail_screen">DetailScreenActivity</string>
 </resources>
