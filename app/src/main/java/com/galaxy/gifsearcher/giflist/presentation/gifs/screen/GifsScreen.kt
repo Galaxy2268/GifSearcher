@@ -7,6 +7,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -99,12 +100,16 @@ fun GifsScreen(
                 ) {
                     items(
                         count = gifs.itemCount,
+                        key = { index ->
+                            gifs[index]!!.id
+                        }
                     ) { index ->
                         val gif = gifs[index]
                         gif?.let {
                             GifCard(
                                 gif = gif,
                                 modifier = Modifier
+                                    .aspectRatio(1f)
                                     .padding(2.dp),
                                 animatedContentScope = animatedContentScope,
                                 sharedTransitionScope = sharedTransitionScope,

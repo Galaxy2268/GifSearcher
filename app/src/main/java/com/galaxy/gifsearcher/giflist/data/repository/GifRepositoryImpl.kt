@@ -14,7 +14,7 @@ class GifRepositoryImpl(
 ): GifRepository {
     override fun getGifs(query: String): Flow<PagingData<Gif>> {
         return Pager(
-            config = PagingConfig(pageSize = 50),
+            config = PagingConfig(pageSize = 25),
             pagingSourceFactory = { GiphyPagingSource(api, query) },
         ).flow
     }
