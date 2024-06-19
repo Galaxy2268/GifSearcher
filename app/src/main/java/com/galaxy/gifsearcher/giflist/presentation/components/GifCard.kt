@@ -11,6 +11,7 @@ import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
@@ -61,6 +62,7 @@ fun GifCard(
     with(sharedTransitionScope){
         ElevatedCard(
             modifier = modifier
+                .aspectRatio(gif.width / gif.height)
                 .sharedBounds(
                     sharedTransitionScope.rememberSharedContentState(key = gif.id),
                     animatedVisibilityScope = animatedContentScope,
@@ -104,7 +106,7 @@ fun GifCard(
                     .build(),
                 contentDescription = "Gif",
                 modifier = Modifier
-                    .aspectRatio(gif.width / gif.height)
+                    .fillMaxSize()
                     .clip(shape)
                     .indication(
                         interactionSource,
