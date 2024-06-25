@@ -5,11 +5,12 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -87,10 +88,10 @@ fun GifsScreen(
                         .weight(1f)
                 )
             } else {
-                LazyVerticalStaggeredGrid(
+                LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxSize(),
-                    columns = StaggeredGridCells.Fixed(2)
+                    columns = GridCells.Fixed(2)
                 ) {
                     items(
                         count = gifs.itemCount,
@@ -100,6 +101,7 @@ fun GifsScreen(
                             GifCard(
                                 gif = gif,
                                 modifier = Modifier
+                                    .aspectRatio(1f)
                                     .padding(2.dp),
                                 onTap = {
                                     val intent = Intent(context, DetailScreenActivity::class.java).apply {

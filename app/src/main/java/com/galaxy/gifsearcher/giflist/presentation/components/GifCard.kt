@@ -6,7 +6,6 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -27,6 +26,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
@@ -54,7 +54,6 @@ fun GifCard(
 
     ElevatedCard(
         modifier = modifier
-            .aspectRatio(gif.width / gif.height)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
@@ -94,6 +93,7 @@ fun GifCard(
                     interactionSource,
                     rememberRipple(bounded = true)
                 ),
+            contentScale = ContentScale.Crop
         )
         DropdownMenu(
             expanded = isContextMenuVisible.value,
