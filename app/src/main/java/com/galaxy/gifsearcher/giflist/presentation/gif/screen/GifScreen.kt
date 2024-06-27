@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.galaxy.gifsearcher.giflist.presentation.components.ErrorScreen
 import com.galaxy.gifsearcher.giflist.presentation.components.GifCard
 import com.galaxy.gifsearcher.giflist.presentation.gif.GifViewModel
 
@@ -19,17 +20,23 @@ fun GifScreen(
 
     val gif = viewModel.gif.value
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-        GifCard(
-            gif = gif,
+    if (gif.url.isBlank()){
+        ErrorScreen()
+    }else{
+        Box(
             modifier = Modifier
-                .aspectRatio(gif.width / gif.height)
-                .padding(8.dp),
-            contextMenu = true,
-        )
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ){
+            GifCard(
+                gif = gif,
+                modifier = Modifier
+                    .aspectRatio(gif.width / gif.height)
+                    .padding(8.dp),
+                contextMenu = true,
+                onPress = {}
+            )
+        }
     }
+
 }
