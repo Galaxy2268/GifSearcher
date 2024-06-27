@@ -1,9 +1,7 @@
 package com.galaxy.gifsearcher.giflist.presentation.gifs.screen
 
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.widget.Toast
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
@@ -40,13 +39,11 @@ import com.galaxy.gifsearcher.giflist.presentation.gifs.GifsViewModel
 import com.galaxy.gifsearcher.giflist.presentation.util.Screen
 
 
-@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GifsScreen(
     viewModel: GifsViewModel = hiltViewModel(),
     navController: NavController,
-    animatedContentScope: AnimatedContentScope,
-    sharedTransitionScope: SharedTransitionScope,
 ) {
     val gifs = viewModel.gifsPagingFlow.collectAsLazyPagingItems()
     val searchText = viewModel.searchText.collectAsState()
@@ -55,6 +52,9 @@ fun GifsScreen(
     val focusRequester = remember { FocusRequester() }
     val pullToRefreshState = rememberPullToRefreshState()
     val scrollState = rememberScrollState()
+    val cellConfiguration = if (LocalConfiguration.current.orientation == ORIENTATION_LANDSCAPE) {
+        GridCells.Fixed(4)
+    } else GridCells.Fixed(2)
 
     LaunchedEffect(key1 = gifs.loadState) {
         if (gifs.loadState.refresh is LoadState.Error || gifs.loadState.append is LoadState.Error) {
@@ -96,12 +96,12 @@ fun GifsScreen(
                 LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxSize(),
-                    columns = GridCells.Fixed(2)
+                    columns = cellConfiguration
                 ) {
                     items(
                         count = gifs.itemCount,
                         key = { index ->
-                            gifs[index]!!.id
+                            gifs[index]?.id ?: index
                         }
                     ) { index ->
                         val gif = gifs[index]
@@ -111,8 +111,6 @@ fun GifsScreen(
                                 modifier = Modifier
                                     .aspectRatio(1f)
                                     .padding(2.dp),
-                                animatedContentScope = animatedContentScope,
-                                sharedTransitionScope = sharedTransitionScope,
                                 onTap = {
                                     navController.navigate(
                                         Screen.GifScreen(

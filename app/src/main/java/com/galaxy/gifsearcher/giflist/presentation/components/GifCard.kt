@@ -2,10 +2,6 @@ package com.galaxy.gifsearcher.giflist.presentation.components
 
 import android.content.Intent
 import android.widget.Toast
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.core.keyframes
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -40,15 +36,12 @@ import coil.decode.GifDecoder
 import coil.request.ImageRequest
 import com.galaxy.gifsearcher.giflist.domain.model.Gif
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun GifCard(
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = RoundedCornerShape(8.dp),
     elevation: CardElevation = CardDefaults.cardElevation(8.dp),
     gif: Gif,
-    animatedContentScope: AnimatedContentScope,
-    sharedTransitionScope: SharedTransitionScope,
     onTap: (() -> Unit)? = null,
     onPress: (() -> Unit)? = null,
     contextMenu: Boolean = false,
@@ -59,102 +52,88 @@ fun GifCard(
     val interactionSource = remember { MutableInteractionSource() }
 
 
-    with(sharedTransitionScope){
-        ElevatedCard(
-            modifier = modifier
-                .sharedBounds(
-                    sharedTransitionScope.rememberSharedContentState(key = gif.id),
-                    animatedVisibilityScope = animatedContentScope,
-                    clipInOverlayDuringTransition = OverlayClip(shape),
-                    boundsTransform = { _, _ ->
-                        keyframes {
-                            durationMillis = 175
+    ElevatedCard(
+        modifier = modifier
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        if (contextMenu) {
+                            isContextMenuVisible.value = true
+                        }
+                    },
+                    onTap = {
+                        onTap?.invoke()
+                    },
+                    onPress = {
+                        if(onTap != null || onPress != null || contextMenu) {
+                            val press = PressInteraction.Press(it)
+                            interactionSource.emit(press)
+                            tryAwaitRelease()
+                            interactionSource.emit(PressInteraction.Release(press))
+                            onPress?.invoke()
                         }
                     }
                 )
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onLongPress = {
-                            if (contextMenu) {
-                                isContextMenuVisible.value = true
-                            }
-                        },
-                        onTap = {
-                            onTap?.invoke()
-                        },
-                        onPress = {
-                            if(onTap != null || onPress != null) {
-                                val press = PressInteraction.Press(it)
-                                interactionSource.emit(press)
-                                tryAwaitRelease()
-                                interactionSource.emit(PressInteraction.Release(press))
-                                onPress?.invoke()
-                            }
-                        }
+            },
+        elevation = elevation,
+
+    ) {
+        AsyncImage(
+            contentScale = ContentScale.Crop,
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(gif.url)
+                .decoderFactory(GifDecoder.Factory())
+                .build(),
+            contentDescription = "Gif",
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(shape)
+                .indication(
+                    interactionSource,
+                    rememberRipple(bounded = true)
+                ),
+        )
+        DropdownMenu(
+            expanded = isContextMenuVisible.value,
+            onDismissRequest = { isContextMenuVisible.value = false },
+        ) {
+            DropdownMenuItem(
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.ContentCopy,
+                        contentDescription = "Copy url"
                     )
                 },
-            elevation = elevation,
-
-        ) {
-            AsyncImage(
-                contentScale = ContentScale.Crop,
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(gif.url)
-                    .placeholderMemoryCacheKey(gif.id)
-                    .memoryCacheKey(gif.id)
-                    .decoderFactory(GifDecoder.Factory())
-                    .build(),
-                contentDescription = "Gif",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(shape)
-                    .indication(
-                        interactionSource,
-                        rememberRipple(bounded = true)
-                    ),
+                text = { Text(text = "Copy") },
+                onClick = {
+                    isContextMenuVisible.value = false
+                    clipboardManager.setText(AnnotatedString(gif.url))
+                    Toast.makeText(
+                        context,
+                        "Copied",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             )
-            DropdownMenu(
-                expanded = isContextMenuVisible.value,
-                onDismissRequest = { isContextMenuVisible.value = false },
-            ) {
-                DropdownMenuItem(
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.ContentCopy,
-                            contentDescription = "Copy url"
-                        )
-                    },
-                    text = { Text(text = "Copy") },
-                    onClick = {
-                        isContextMenuVisible.value = false
-                        clipboardManager.setText(AnnotatedString(gif.url))
-                        Toast.makeText(
-                            context,
-                            "Copied",
-                            Toast.LENGTH_SHORT
-                        ).show()
+            DropdownMenuItem(
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Send,
+                        contentDescription = "Share"
+                    )
+                },
+                text = { Text(text = "Share") },
+                onClick = {
+                    isContextMenuVisible.value = false
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, gif.url)
                     }
-                )
-                DropdownMenuItem(
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = "Share"
-                        )
-                    },
-                    text = { Text(text = "Share") },
-                    onClick = {
-                        isContextMenuVisible.value = false
-                        val intent = Intent(Intent.ACTION_SEND).apply {
-                            type = "text/plain"
-                            putExtra(Intent.EXTRA_TEXT, gif.url)
-                        }
-                        if(intent.resolveActivity(context.packageManager) != null){
-                            context.startActivity(intent)
-                        }
+                    if(intent.resolveActivity(context.packageManager) != null){
+                        context.startActivity(intent)
                     }
-                )
-            }
+                }
+            )
         }
     }
 }

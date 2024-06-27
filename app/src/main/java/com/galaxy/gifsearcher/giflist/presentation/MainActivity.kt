@@ -3,8 +3,6 @@ package com.galaxy.gifsearcher.giflist.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalSharedTransitionApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -29,28 +26,23 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SharedTransitionLayout {
-                        val navController = rememberNavController()
-                        NavHost(
-                            navController = navController,
-                            startDestination = Screen.GifsScreen
-                        ){
-                            composable<Screen.GifsScreen>{
-                                GifsScreen(
-                                    navController = navController,
-                                    animatedContentScope = this,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                )
-                            }
 
-                            composable<Screen.GifScreen>{
-                                GifScreen(
-                                    animatedContentScope = this,
-                                    sharedTransitionScope = this@SharedTransitionLayout
-                                )
-                            }
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.GifsScreen
+                    ) {
+                        composable<Screen.GifsScreen> {
+                            GifsScreen(
+                                navController = navController,
+                            )
+                        }
+
+                        composable<Screen.GifScreen> {
+                            GifScreen()
                         }
                     }
+
 
                 }
             }
