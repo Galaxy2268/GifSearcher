@@ -1,6 +1,7 @@
 package com.galaxy.gifsearcher.giflist.presentation.gifs.screen
 
 import android.content.Intent
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
@@ -50,6 +52,9 @@ fun GifsScreen(
     val focusRequester = remember { FocusRequester() }
     val pullToRefreshState = rememberPullToRefreshState()
     val scrollState = rememberScrollState()
+    val cellConfiguration = if (LocalConfiguration.current.orientation == ORIENTATION_LANDSCAPE) {
+        GridCells.Fixed(4)
+    } else GridCells.Fixed(2)
 
     LaunchedEffect(key1 = gifs.loadState) {
         if (gifs.loadState.refresh is LoadState.Error || gifs.loadState.append is LoadState.Error) {
@@ -91,10 +96,13 @@ fun GifsScreen(
                 LazyVerticalGrid(
                     modifier = Modifier
                         .fillMaxSize(),
-                    columns = GridCells.Fixed(2)
+                    columns = cellConfiguration
                 ) {
                     items(
                         count = gifs.itemCount,
+                        key = {index ->
+                            gifs[index]?.id ?: index
+                        }
                     ) { index ->
                         val gif = gifs[index]
                         gif?.let {
@@ -109,7 +117,6 @@ fun GifsScreen(
                                         putExtra("url", gif.url)
                                         putExtra("width", gif.width)
                                         putExtra("height", gif.height)
-
                                     }
                                     startActivity(context, intent, null)
                                 },

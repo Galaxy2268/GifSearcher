@@ -12,7 +12,7 @@ data class Data(
 )
 
 data class ImageData(
-    @SerializedName("fixed_height")
+    @SerializedName("fixed_width")
     val image: Image
 )
 
