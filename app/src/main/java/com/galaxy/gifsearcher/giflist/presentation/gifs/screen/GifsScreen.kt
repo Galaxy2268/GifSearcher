@@ -85,6 +85,7 @@ fun GifsScreen(
             if (gifs.loadState.refresh is LoadState.Loading) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+
                 }
             } else if((gifs.loadState.refresh is LoadState.Error || gifs.loadState.append is LoadState.Error)){
                 ErrorScreen(
