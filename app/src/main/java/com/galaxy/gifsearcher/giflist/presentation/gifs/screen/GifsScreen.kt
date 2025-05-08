@@ -57,7 +57,7 @@ fun GifsScreen(
         if (gifs.loadState.refresh is LoadState.Error || gifs.loadState.append is LoadState.Error) {
             Toast.makeText(
                 context,
-                "Problem with network",
+                "Something went wrong!",
                 Toast.LENGTH_LONG
             ).show()
         }
