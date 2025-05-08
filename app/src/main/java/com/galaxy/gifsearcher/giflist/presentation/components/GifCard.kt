@@ -1,17 +1,19 @@
 package com.galaxy.gifsearcher.giflist.presentation.components
 
+import android.content.ClipData
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.DropdownMenu
@@ -19,6 +21,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
@@ -48,22 +52,15 @@ fun GifCard(
 ){
     val isContextMenuVisible = rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
-    val clipboardManager = LocalClipboardManager.current
+    val clipboardManager = LocalClipboard.current
     val interactionSource = remember { MutableInteractionSource() }
 
 
     ElevatedCard(
         modifier = modifier
+            .clip(shape)
             .pointerInput(Unit) {
                 detectTapGestures(
-                    onLongPress = {
-                        if (contextMenu) {
-                            isContextMenuVisible.value = true
-                        }
-                    },
-                    onTap = {
-                        onTap?.invoke()
-                    },
                     onPress = {
                         if(onTap != null || onPress != null || contextMenu) {
                             val press = PressInteraction.Press(it)
@@ -72,11 +69,18 @@ fun GifCard(
                             interactionSource.emit(PressInteraction.Release(press))
                             onPress?.invoke()
                         }
+                    },
+                    onTap = {
+                        onTap?.invoke()
+                    },
+                    onLongPress = {
+                        if (contextMenu) {
+                            isContextMenuVisible.value = true
+                        }
                     }
                 )
             },
         elevation = elevation,
-
     ) {
         AsyncImage(
             contentScale = ContentScale.Crop,
@@ -86,12 +90,8 @@ fun GifCard(
                 .build(),
             contentDescription = "Gif",
             modifier = Modifier
+                .indication(interactionSource, ripple())
                 .fillMaxSize()
-                .clip(shape)
-                .indication(
-                    interactionSource,
-                    rememberRipple(bounded = true)
-                ),
         )
         DropdownMenu(
             expanded = isContextMenuVisible.value,
@@ -107,7 +107,8 @@ fun GifCard(
                 text = { Text(text = "Copy") },
                 onClick = {
                     isContextMenuVisible.value = false
-                    clipboardManager.setText(AnnotatedString(gif.url))
+                    val clipData = ClipData.newPlainText("Gif",AnnotatedString(gif.url))
+                    clipboardManager.nativeClipboard.setPrimaryClip(clipData)
                     Toast.makeText(
                         context,
                         "Copied",

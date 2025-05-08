@@ -15,8 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -50,7 +48,6 @@ fun GifsScreen(
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
-    val pullToRefreshState = rememberPullToRefreshState()
     val scrollState = rememberScrollState()
     val cellConfiguration = if (LocalConfiguration.current.orientation == ORIENTATION_LANDSCAPE) {
         GridCells.Fixed(4)
@@ -65,10 +62,14 @@ fun GifsScreen(
             ).show()
         }
     }
-    
-    Box(modifier = Modifier
-        .nestedScroll(pullToRefreshState.nestedScrollConnection)
-        .fillMaxSize()
+
+    PullToRefreshBox(
+        modifier = Modifier
+        .fillMaxSize(),
+        onRefresh = {
+            viewModel.refresh()
+        },
+        isRefreshing = viewModel.isRefreshing.value
     ){
         Column(
             modifier = Modifier
@@ -132,23 +133,5 @@ fun GifsScreen(
             }
         }
 
-        if(pullToRefreshState.isRefreshing){
-            LaunchedEffect(true) {
-                viewModel.refresh()
-            }
-        }
-
-        LaunchedEffect(viewModel.isRefreshing.value) {
-            if(viewModel.isRefreshing.value){
-                pullToRefreshState.startRefresh()
-            }else{
-                pullToRefreshState.endRefresh()
-            }
-        }
-
-        PullToRefreshContainer(
-            state = pullToRefreshState,
-            modifier = Modifier.align(Alignment.TopCenter)
-        )
     }
 }
