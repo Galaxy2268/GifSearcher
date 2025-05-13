@@ -1,5 +1,6 @@
 package com.galaxy.gifsearcher.giflist.presentation.gifs.screen
 
+import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -28,20 +29,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.galaxy.gifsearcher.giflist.presentation.DetailScreenActivity
 import com.galaxy.gifsearcher.giflist.presentation.components.ErrorScreen
 import com.galaxy.gifsearcher.giflist.presentation.components.GifCard
 import com.galaxy.gifsearcher.giflist.presentation.gifs.GifsViewModel
-import com.galaxy.gifsearcher.giflist.presentation.util.Screen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GifsScreen(
     viewModel: GifsViewModel = hiltViewModel(),
-    navController: NavController,
 ) {
     val gifs = viewModel.gifsPagingFlow.collectAsLazyPagingItems()
     val searchText = viewModel.searchText.collectAsState()
@@ -114,14 +113,13 @@ fun GifsScreen(
                                     .aspectRatio(1f)
                                     .padding(2.dp),
                                 onTap = {
-                                    navController.navigate(
-                                        Screen.GifScreen(
-                                            id = gif.id,
-                                            url = gif.url,
-                                            width = gif.width,
-                                            height = gif.height
-                                        )
-                                    )
+                                    val intent = Intent(context, DetailScreenActivity::class.java).apply {
+                                        putExtra("id", gif.id)
+                                        putExtra("url", gif.url)
+                                        putExtra("width", gif.width)
+                                        putExtra("height", gif.height)
+                                    }
+                                    context.startActivity(intent, null)
                                 },
                                 onPress = { focusManager.clearFocus() },
                                 contextMenu = true,

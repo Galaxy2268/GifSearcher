@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+
+            <data android:mimeType="text/plain" />
+        </intent>
+    </queries>
 
     <application
         android:name=".GifApp"
@@ -15,6 +24,11 @@
         android:theme="@style/Theme.GifSearcher"
         tools:targetApi="31">
         <activity
+            android:name=".giflist.presentation.DetailScreenActivity"
+            android:exported="false"
+            android:label="@string/title_activity_detail_screen"
+            android:theme="@style/Theme.GifSearcher" />
+        <activity
             android:name=".giflist.presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.GifSearcher">
@@ -25,12 +39,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.SEND"/>
-            <data android:mimeType="text/plain"/>
-        </intent>
-    </queries>
 
 </manifest>
