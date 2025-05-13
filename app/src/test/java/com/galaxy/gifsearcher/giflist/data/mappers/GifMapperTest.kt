@@ -8,13 +8,13 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 class GifMapperTest{
-    private val imageData = ImageData(Image("image"))
+    private val imageData = ImageData(Image("image", 0f, 0f))
     private val data = listOf(
-        Data("0",imageData),
-        Data("1",imageData),
-        Data("2",imageData),
-        Data("3",imageData),
-        Data("4",imageData),
+        Data(imageData),
+        Data(imageData),
+        Data(imageData),
+        Data(imageData),
+        Data(imageData),
     )
 
     @Test
